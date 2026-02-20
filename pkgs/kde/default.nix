@@ -78,6 +78,7 @@ let
         kio-extras-kf5 = self.callPackage ./misc/kio-extras-kf5 { };
         kio-fuse = self.callPackage ./misc/kio-fuse { };
         klevernotes = self.callPackage ./misc/klevernotes { };
+        kraft = self.callPackage ./misc/kraft { };
         ktextaddons = self.callPackage ./misc/ktextaddons { };
         kup = self.callPackage ./misc/kup { };
         marknote = self.callPackage ./misc/marknote { };
