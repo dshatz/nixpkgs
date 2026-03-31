@@ -53,7 +53,7 @@ let
       else
         mkKeyValueDefault { } sep k v;
   };
-  configContent = gendeepINI cfg.serverConfig;
+  configFile = pkgs.writeText "qBittorrent.conf" (gendeepINI cfg.serverConfig);
 in
 {
   options.services.qbittorrent = {
@@ -154,11 +154,6 @@ in
             mode = "755";
             inherit (cfg) user group;
           };
-          "${cfg.profileDir}/qBittorrent/config/qBittorrent.conf"."f+" = mkIf (cfg.serverConfig != { }) {
-            mode = "600";
-            inherit (cfg) user group;
-            argument = configContent;
-          };
         };
       };
       services.qbittorrent = {
@@ -170,12 +165,18 @@ in
           "nss-lookup.target"
         ];
         wantedBy = [ "multi-user.target" ];
-        restartTriggers = optionals (cfg.serverConfig != { }) [ configContent ];
+        restartTriggers = optionals (cfg.serverConfig != { }) [ configFile ];
 
         serviceConfig = {
           Type = "simple";
           User = cfg.user;
           Group = cfg.group;
+
+          # the config file has to be writable, so we have to do this weird dance
+          ExecStartPre = lib.mkIf (cfg.serverConfig != { }) ''
+            ${pkgs.coreutils}/bin/install -Dm600 ${configFile} "${cfg.profileDir}/qBittorrent/config/qBittorrent.conf"
+          '';
+
           ExecStart = utils.escapeSystemdExecArgs (
             [
               (getExe cfg.package)

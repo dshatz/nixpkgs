@@ -10,44 +10,49 @@
   bleach,
   tinycss2,
 }:
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "django-markdownify";
-  version = "0.9.5";
+  version = "0.9.6";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "erwinmatijsen";
     repo = "django-markdownify";
-    tag = version;
-    hash = "sha256-KYU8p8NRD4EIS/KhOk9nvmXCf0RWEc+IFZ57YtsDSWE=";
+    tag = finalAttrs.version;
+    hash = "sha256-L/N0jjxBz7aQletOg+qairgq4utifPz4oqjT9AcljLI=";
   };
+
+  build-system = [ setuptools ];
 
   dependencies = [
     django
     markdown
     bleach
-  ];
+  ]
+  ++ bleach.optional-dependencies.css;
 
-  build-system = [ setuptools ];
-  doCheck = true;
   preCheck = ''
     export DJANGO_SETTINGS_MODULE=markdownify.checks
   '';
+
   nativeCheckInputs = [
     tinycss2
     pytest-django
     pytestCheckHook
   ];
+
   pythonImportsCheck = [ "markdownify" ];
+
   disabledTests = [
     # Test settings didn't setup DjangoTemplates
     "test_markdownify_nodelist"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Markdown template filter for Django";
     homepage = "https://github.com/erwinmatijsen/django-markdownify";
-    license = licenses.mit;
-    maintainers = with maintainers; [ kurogeek ];
+    changelog = "https://github.com/erwinmatijsen/django-markdownify/releases/tag/${finalAttrs.src.tag}";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ kurogeek ];
   };
-}
+})

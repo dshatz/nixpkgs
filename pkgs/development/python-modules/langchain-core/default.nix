@@ -36,14 +36,14 @@
 
 buildPythonPackage (finalAttrs: {
   pname = "langchain-core";
-  version = "1.2.17";
+  version = "1.2.22";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "langchain-ai";
     repo = "langchain";
     tag = "langchain-core==${finalAttrs.version}";
-    hash = "sha256-vuMVNRQSgj3o1KRBgspUglLECPF+YYWpH4/e5iE8ZYY=";
+    hash = "sha256-jaoZtRNHAXbt/a9hx4zPGEYppT/Kxu0MPn/cOj5kLP4=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/libs/core";
@@ -120,6 +120,17 @@ buildPythonPackage (finalAttrs: {
     # AssertionError: assert [+ received] == [- snapshot]
     "test_graph_sequence_map"
     "test_representation_of_runnables"
+
+    # Requires network access
+    "test_discord_webhook"
+    "test_https_only_mode"
+    "test_ngrok_url"
+    "test_safe_url_returns_true"
+    "test_slack_webhook"
+    "test_valid_public_https_url"
+    "test_valid_public_http_url"
+    "test_valid_url_accepted"
+    "test_webhook_site"
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
     # Langchain-core the following tests due to the test comparing execution time with magic values.
