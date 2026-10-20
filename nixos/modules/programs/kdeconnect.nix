@@ -37,5 +37,13 @@
         ];
         allowedUDPPortRanges = allowedTCPPortRanges;
       };
+      services.geoclue2.enableNmea = true;
+      services.avahi = {
+        publish = {
+          enable = true;
+          addresses = true;
+          userServices = true;
+        };
+      };
     };
 }

@@ -12,6 +12,7 @@
   libei,
   libevdev,
   libfakekey,
+  fetchFromGitLab
 }:
 mkKdeDerivation {
   pname = "kdeconnect-kde";
@@ -21,6 +22,15 @@ mkKdeDerivation {
       sshfs = lib.getExe sshfs;
     })
   ];
+
+#   src = fetchFromGitLab {
+#     owner = "dshatz";
+#     repo = "kdeconnect-kde";
+#     domain = "invent.kde.org";
+#     rev = "geolocation2";
+#     hash = "sha256-ep7ESwDZULAoI09AnlYpj/9UyRmZpDWc5WmXuk8wSn4=";
+#   };
+#   src = /home/dshatz/dev/cpp/kdeconnect-kde;
 
   # Hardcoded as a QString, which is UTF-16 so Nix can't pick it up automatically
   postFixup = ''
@@ -41,5 +51,6 @@ mkKdeDerivation {
 
   extraCmakeFlags = [
     "-DQtWaylandScanner_EXECUTABLE=${qtbase}/libexec/qtwaylandscanner"
+    "-DUDEVDIR=udev"
   ];
 }
