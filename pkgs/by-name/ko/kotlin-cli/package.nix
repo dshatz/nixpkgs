@@ -6,9 +6,12 @@
   makeWrapper,
   nix-update-script,
   jdk25,
+  buildFHSEnv,
+  zlib
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+let
+kotlin-cli = stdenv.mkDerivation (finalAttrs: {
   pname = "kotlin-cli";
   version = "0.13.0";
 
@@ -49,6 +52,13 @@ stdenv.mkDerivation (finalAttrs: {
       "--url=https://github.com/JetBrains/kotlin-toolchain"
     ];
   };
+});
+in buildFHSEnv {
+  inherit (kotlin-cli) version;
+  name = "kotlin";
+  targetPkgs = pkgs: [
+    zlib
+  ];
 
   meta = {
     description = "Kotlin Toolchain CLI";
@@ -62,4 +72,5 @@ stdenv.mkDerivation (finalAttrs: {
     sourceProvenance = [ lib.sourceTypes.binaryBytecode ];
     mainProgram = "kotlin";
   };
-})
+  runScript = "${kotlin-cli}/bin/kotlin";
+}
