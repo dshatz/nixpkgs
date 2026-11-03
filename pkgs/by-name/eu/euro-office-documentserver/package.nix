@@ -13,7 +13,7 @@
 }:
 
 let
-  version = "9.3.4-hotfix.1";
+  version = "9.3.1";
 
   # TODO: build x2t from Euro-Office/core etc. and/or move
   # x2t-with-fonts-and-themes into its own shared package.
@@ -24,7 +24,7 @@ let
     owner = "Euro-Office";
     repo = "server";
     tag = "v${version}";
-    hash = "sha256-XZ4FSfh8uTWPCAbv2ShDhzkCyv19f3nvSuKy19bECfg=";
+    hash = "sha256-kDMK4WUwNqOzTwruVE4SC2cyQf7mpZpabB4Ov5+4SzU=";
   };
 
   # These are required but not included in the submodules for some reason.
@@ -38,7 +38,7 @@ let
   document-formats-src = fetchFromGitHub {
     owner = "Euro-Office";
     repo = "document-formats";
-    tag = "v${version}";
+    tag = "v9.3.1-rc.1";
     hash = "sha256-ycERseZCkbJ1ArAhwMCScNRkm4wax6LC2P1pRf/X2t0=";
   };
 
@@ -65,7 +65,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "Euro-Office";
     repo = "document-server-package";
     tag = "v${version}";
-    hash = "sha256-iqhVfSAg3RPEeobCxceErxfB/bj1EQiCFpYrmfc+nXg=";
+    hash = "sha256-373ayOQGtChBWruDGUDPl6P8eRvmxRR2dJQVstETkh8=";
   };
 
   __structuredAttrs = true;
